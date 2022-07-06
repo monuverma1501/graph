@@ -1,0 +1,62 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+void shortestPath(int Source,int V,vector<pair<int,int>> adj[]) 
+{ 
+    vector<int> dist(V,INT_MAX);
+    
+    // min heap;  store(dist,node) 
+    priority_queue< pair<int,int> , vector<pair<int,int>> , greater<pair<int,int>> > pq;
+    pq.push({0,Source});
+    dist[Source]=0;
+    while(!pq.empty())
+    {
+        int dis=pq.top().first;
+        int u=pq.top().second;
+        pq.pop();
+        for(auto edge : adj[u])
+        {
+            int v = edge.first;
+            int w = edge.second;        
+            if(dist[v]>dis+w)
+            {
+                dist[v] = dis+w;
+                pq.push({dist[v], v});
+            }
+        }
+    }
+    for (int i=0;i<V;i++) 
+        cout << dist[i] <<" "; 
+} 
+
+int main()
+{
+    int n,e;cin>>n>>e;
+    int sourceNODE;cin>>sourceNODE;
+    vector<pair<int,int>> adj[n];
+    for(int i=0;i<e;i++)
+    {
+        int a,b,w;
+        cin>>a>>b>>w;
+        adj[a].push_back({b,w});
+        adj[b].push_back({a,w});
+    }
+    shortestPath(sourceNODE,n,adj);
+}
+
+
+
+//input
+6 7
+1
+0 1 6
+1 2 2
+1 4 1
+4 3 3
+2 3 4
+2 5 5
+3 5 1
+
+
+//output
+6 0 2 4 1 5 
